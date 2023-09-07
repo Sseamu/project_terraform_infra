@@ -50,10 +50,12 @@ resource "aws_s3_bucket_policy" "bucket-policy" {
        "Effect": "Allow",
       "Action": [
         "s3:PutObject",
-        "s3:PutBucketPolicy",
-        "s3:ListBucket"
+        "s3:GetObject",
         ],
-      "Resource":["arn:aws:s3:::${aws_s3_bucket.philoberry-s3.id}/*"]
+      "Resource":["arn:aws:s3:::${aws_s3_bucket.philoberry-s3.id}/*"],
+      "Principal": {
+        "AWS": ["arn:aws:iam::874509284256:user/philoberry-iam-prod"]
+      
     }
   ]
 }

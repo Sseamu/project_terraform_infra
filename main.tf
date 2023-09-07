@@ -27,11 +27,39 @@ module "ec2" {
   user_data_path     = "./ec2/userdata.yaml"
 }
 
-# ALB
-module "alb" {
-  source = "./alb"
+
+#s3
+module "s3" {
+  source       = "./s3"
   service_type = var.service_type
-  vpc_id = module.vpc.vpc_id
-  subnet_ids = [module.vpc.public_subnet1_id, module.vpc.public_subnet2_id]
-  depends_on = [module.ec2]
+  vpc_id       = module.vpc.vpc_id
+  bucket       = "philoberry-s3-${var.service_type}"
 }
+
+
+
+
+# #rds
+# module "rds" {
+#   source              = "./rds"
+#   service_type        = var.service_type
+#   vpc_id              = module.vpc.vpc_id
+#   private_subnet3_id  = module.vpc.private_subnet3_id
+#   private_subnet4_id  = module.vpc.private_subnet4_id
+#   instance_class      = "db.t2.micro"
+#   username            = "admin"
+#   password            = "1q2w3e4r"
+#   publicly_accessible = false
+# }
+
+
+
+
+# ALB
+# module "alb" {
+#   source = "./alb"
+#   service_type = var.service_type
+#   vpc_id = module.vpc.vpc_id
+#   subnet_ids = [module.vpc.public_subnet1_id, module.vpc.public_subnet2_id]
+#   depends_on = [module.ec2]
+# }

@@ -26,3 +26,12 @@ module "ec2" {
   instance_type      = "t2.micro"
   user_data_path     = "./ec2/userdata.yaml"
 }
+
+# ALB
+module "alb" {
+  source = "./alb"
+  service_type = var.service_type
+  vpc_id = module.vpc.vpc_id
+  subnet_ids = [module.vpc.public_subnet1_id, module.vpc.public_subnet2_id]
+  depends_on = [module.ec2]
+}

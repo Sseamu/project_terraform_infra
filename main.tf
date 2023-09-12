@@ -5,7 +5,15 @@ terraform {
       version = "~> 5.0"
     }
   }
+  backend "s3" {
+    bucket  = "s3-terraform-versioning" # 고유한 S3 버킷 이름을 지정하세요.
+    key     = "terraform.tfstate"       # 원격 상태 파일의 이름을 설정하세요.
+    region  = "ap-northeast-2"          # AWS 리전을 설정하세요.
+    encrypt = true                      # 상태 파일 암호화 여부를 설정하세요.
+    # dynamodb_table = "your-lock-table"             # 선택적으로 DynamoDB 락 테이블을 사용하려면 지정하세요.
+  }
 }
+
 
 ## AWS 리전(서울)
 provider "aws" {

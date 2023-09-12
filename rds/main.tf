@@ -60,6 +60,9 @@ resource "aws_db_instance" "rds" {
   port                   = 3306                                //데이터베이스 포트
   skip_final_snapshot    = true
 
+  lifecycle {
+    prevent_destroy = true
+  }
   tags = {
     Name    = "philoberry-rds-db-${var.service_type}"
     Service = "philoberry-${var.service_type}"

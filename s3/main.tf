@@ -3,6 +3,9 @@
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket
 resource "aws_s3_bucket" "philoberry-s3" {
   bucket = var.bucket //버킷 이름
+  lifecycle {
+    prevent_destroy = true
+  }
 
   tags = {
     Name    = "philoberry-front-${var.service_type}"
@@ -21,17 +24,13 @@ resource "aws_s3_bucket_public_access_block" "public-access" {
   restrict_public_buckets = true
 }
 
-resource "aws_s3_bucket_acl" "philoberry-s3-private" {
-  bucket = aws_s3_bucket.philoberry-s3.id
-  acl    = "private"
-}
-
 resource "aws_s3_bucket_versioning" "s3_versioning" {
   bucket = aws_s3_bucket.philoberry-s3.id
   versioning_configuration {
     status = "Enabled"
   }
 }
+
 
 
 # 버킷 정책(acl)
@@ -44,18 +43,29 @@ resource "aws_s3_bucket_policy" "bucket-policy" {
 
   policy = <<POLICY
 {
-  "Version":"2012-10-17",
-  "Statement":[
+  "Id": "Policy1694490590860",
+  "Version": "2012-10-17",
+  "Statement": [
     {
-       "Effect": "Allow",
+      "Sid": "Stmt1694490506867",
       "Action": [
-        "s3:PutObject",
         "s3:GetObject",
-        ],
-      "Resource":["arn:aws:s3:::${aws_s3_bucket.philoberry-s3.id}/*"],
+        "s3:PutObject"
+      ],
+      "Effect": "Allow",
+      "Resource": ["${aws_s3_bucket.philoberry-s3.arn}/*"],
       "Principal": {
-        "AWS": ["arn:aws:iam::874509284256:user/philoberry-iam-prod"]
-      
+        "AWS": ["arn:aws:iam::666897452748:user/hansom-server"]
+      }
+    },
+    {
+      "Sid": "Stmt1694490506867",
+      "Action": ["s3:ListBucket"],
+      "Effect": "Allow",
+      "Resource": ["${aws_s3_bucket.philoberry-s3.arn}"],
+      "Principal": {
+        "AWS": ["arn:aws:iam::666897452748:user/hansom-server"]
+      }
     }
   ]
 }
@@ -63,6 +73,18 @@ POLICY
 }
 
 
+
+//s3 Cors 세팅(임시로 모든 호스트연결)
+resource "aws_s3_bucket_cors_configuration" "philoberry-s3" {
+  bucket = aws_s3_bucket.philoberry-s3.id
+  cors_rule {
+    allowed_methods = ["GET", "PUT", "POST"]
+    allowed_origins = ["*"]
+    expose_headers  = []
+    max_age_seconds = 3000
+  }
+
+}
 //정적 웹 호스팅
 resource "aws_s3_bucket_website_configuration" "philoberry-s3" {
   bucket = aws_s3_bucket.philoberry-s3.id

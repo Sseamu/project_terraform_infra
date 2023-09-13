@@ -17,3 +17,10 @@ variable "service_type" {
 variable "subnet_ids" {
   type = list(any)
 }
+
+#https 프로토콜 certication_arn
+variable "certicate_arn" {
+  description = "The Arn of the Certificate"
+  type        = string
+  default     = "arn:aws:acm:ap-northeast-2:666897452748:certificate/6879c221-38e9-46da-9843-080572c245c0"
+}

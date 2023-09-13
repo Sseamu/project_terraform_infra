@@ -59,20 +59,20 @@ resource "aws_lb_listener" "http_listener" {
     target_group_arn = aws_lb_target_group.tg.arn //대상 그룹
   }
 }
-## https 프로토콜 
-# resource "aws_lb_listener" "https_listener" {
-#   load_balancer_arn = aws_lb.alb.arn //로드밸런서
-#   port              = "443"          //포트
-#   protocol          = "HTTPS"        //프로토콜
-#   ssl_policy        = "ELBSecurityPolicy-2016-08"
-#   certificate_arn   = "arn:aws:iam::187416307283:server-certificate/test_cert_rab3wuqwgja25ct3n4jdj2tzu4"
+# https 프로토콜 
+resource "aws_lb_listener" "https_listener" {
+  load_balancer_arn = aws_lb.alb.arn //로드밸런서
+  port              = "443"          //포트
+  protocol          = "HTTPS"        //프로토콜
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = var.certicate_arn
 
 
-#   default_action {
-#     type             = "forward"                  //다음으로 전달
-#     target_group_arn = aws_lb_target_group.tg.arn //대상 그룹
-#   }
-# }
+  default_action {
+    type             = "forward"                  //다음으로 전달
+    target_group_arn = aws_lb_target_group.tg.arn //대상 그룹
+  }
+}
 
 #대상그룹 
 

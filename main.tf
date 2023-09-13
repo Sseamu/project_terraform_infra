@@ -47,18 +47,18 @@ module "ec2" {
 
 
 
-# #rds
-# module "rds" {
-#   source              = "./rds"
-#   service_type        = var.service_type
-#   vpc_id              = module.vpc.vpc_id
-#   private_subnet3_id  = module.vpc.private_subnet3_id
-#   private_subnet4_id  = module.vpc.private_subnet4_id
-#   instance_class      = "db.t2.micro"
-#   username            = "admin"
-#   password            = "1q2w3e4r"
-#   publicly_accessible = false
-# }
+#rds
+module "rds" {
+  source              = "./rds"
+  service_type        = var.service_type
+  vpc_id              = module.vpc.vpc_id
+  private_subnet3_id  = module.vpc.private_subnet3_id
+  private_subnet4_id  = module.vpc.private_subnet4_id
+  instance_class      = "db.t2.micro"
+  username            = "admin"
+  password            = "1q2w3e4r"
+  publicly_accessible = false
+}
 
 
 

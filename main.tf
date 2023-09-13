@@ -34,7 +34,14 @@ module "ec2" {
   instance_type      = "t2.micro"
   user_data_path     = "./ec2/userdata.yaml"
 }
-
+#Ec2-bastionhost
+module "ec2-bastion" {
+  source            = "./ec2-bastion"
+  service_type      = var.service_type
+  vpc_id            = module.vpc.vpc_id
+  public_subnet1_id = module.vpc.public_subnet1_id
+  instance_type     = "t2.micro"
+}
 
 # #s3
 # module "s3" {

@@ -61,7 +61,7 @@ resource "aws_db_instance" "rds" {
   skip_final_snapshot    = true
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
   tags = {
     Name    = "philoberry-rds-db-${var.service_type}"

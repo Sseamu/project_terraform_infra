@@ -4,7 +4,7 @@
 resource "aws_s3_bucket" "philoberry-s3" {
   bucket = var.bucket //버킷 이름
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 
   tags = {

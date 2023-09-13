@@ -36,29 +36,29 @@ module "ec2" {
 }
 
 
-#s3
-module "s3" {
-  source       = "./s3"
-  service_type = var.service_type
-  vpc_id       = module.vpc.vpc_id
-  bucket       = "philoberry-s3-${var.service_type}"
-}
+# #s3
+# module "s3" {
+#   source       = "./s3"
+#   service_type = var.service_type
+#   vpc_id       = module.vpc.vpc_id
+#   bucket       = "philoberry-s3-${var.service_type}"
+# }
 
 
 
 
-#rds
-module "rds" {
-  source              = "./rds"
-  service_type        = var.service_type
-  vpc_id              = module.vpc.vpc_id
-  private_subnet3_id  = module.vpc.private_subnet3_id
-  private_subnet4_id  = module.vpc.private_subnet4_id
-  instance_class      = "db.t2.micro"
-  username            = "admin"
-  password            = "1q2w3e4r"
-  publicly_accessible = false
-}
+# #rds
+# module "rds" {
+#   source              = "./rds"
+#   service_type        = var.service_type
+#   vpc_id              = module.vpc.vpc_id
+#   private_subnet3_id  = module.vpc.private_subnet3_id
+#   private_subnet4_id  = module.vpc.private_subnet4_id
+#   instance_class      = "db.t2.micro"
+#   username            = "admin"
+#   password            = "1q2w3e4r"
+#   publicly_accessible = false
+# }
 
 
 
@@ -70,4 +70,12 @@ module "alb" {
   vpc_id       = module.vpc.vpc_id
   subnet_ids   = [module.vpc.public_subnet1_id, module.vpc.public_subnet2_id]
   depends_on   = [module.ec2]
+}
+
+#route53
+module "route53" {
+  source       = "./route53"
+  domain_name  = "philoberry.com"
+  record_name  = "www.philoberry.com"
+  alb_dns_name = module.alb.alb_dns_name
 }

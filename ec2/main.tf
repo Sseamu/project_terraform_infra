@@ -32,7 +32,7 @@ resource "aws_security_group" "philoberry_sg" {
 # 위치 : EC2 > 인스턴스 > 인스턴스
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance
 resource "aws_instance" "ec2" {
-  ami                    = "ami-0c9c942bd7bf113a2"               //AMI 선택(우분투)
+  ami                    = "ami-091aca13f89c7964e"               //AMI 선택(아마존리눅스2023)
   instance_type          = var.instance_type                     //인스턴스 유형
   key_name               = "philoberry-keypair"                         //기존 키 페어 선택
   subnet_id              = var.private_subnet1_id                //서브넷

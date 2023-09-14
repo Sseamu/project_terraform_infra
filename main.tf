@@ -32,7 +32,7 @@ module "ec2" {
   vpc_id             = module.vpc.vpc_id
   private_subnet1_id = module.vpc.private_subnet1_id
   instance_type      = "t2.micro"
-  user_data_path     = "./ec2/userdata.yaml"
+  user_data_path     = "./ec2/userdata.sh"
 }
 #Ec2-bastionhost
 module "ec2-bastion" {

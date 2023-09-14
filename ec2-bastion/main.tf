@@ -27,7 +27,7 @@ resource "aws_security_group" "bastionhost_sg" {
 # Ec2 인스턴스 관련 내용
 
 resource "aws_instance" "basion_ec2" {
-  ami                    = "ami-091aca13f89c7964e" //아마존리눅스2023
+  ami                    = "ami-0f22ac1c12807aefc" //아마존리눅스2 LTS
   instance_type          = var.instance_type
   key_name               = var.key_name
   subnet_id              = var.public_subnet1_id                  //public subnet                    // git 에 업로드 되기에 보여주면 안됨

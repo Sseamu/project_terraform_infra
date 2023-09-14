@@ -1,3 +1,4 @@
+#!/bin/bash
 sudo yum update -y
 #git 설치
 sudo yum install -y git

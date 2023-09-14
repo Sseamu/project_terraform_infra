@@ -1,4 +1,4 @@
-var "key_name" {
+variable "key_name" {
   type    = string
   default = "philoberry-keypair"
 }

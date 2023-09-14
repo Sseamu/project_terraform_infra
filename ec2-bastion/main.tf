@@ -1,8 +1,8 @@
 #보안그룹 먼저
-variable "aws_security_group" "bastionhost_sg" {
-  name             = "philoberry-bastion-sg-${var.service_type}"
-  descrdescription = "philoberry-bastion-sg"
-  vpc_id           = var.vpc_id
+resource "aws_security_group" "bastionhost_sg" {
+  name        = "philoberry-bastion-sg-${var.service_type}"
+  description = "philoberry-bastion-sg"
+  vpc_id      = var.vpc_id
 
   #inbound규칙
   ingress {
@@ -10,12 +10,13 @@ variable "aws_security_group" "bastionhost_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_block  = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
   egress {
-    from_port  = 0
-    to_port    = 0
-    cidr_block = ["0.0.0.0/0"]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1" //모든 프로토콜을 허용한다는 의미
+    cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
     Name    = "philoberry-bastion-sg-${var.service_type}"
@@ -29,8 +30,8 @@ resource "aws_instance" "basion_ec2" {
   ami                    = "ami-0c9c942bd7bf113a2" //ubuntu
   instance_type          = var.instance_type
   key_name               = var.key_name
-  subnet_id              = var.public_subnet1_id                      //public subnet                    // git 에 업로드 되기에 보여주면 안됨
-  vpc_security_group_ids = [var.aws_security_group.bastionhost_sg.id] // bastion host sg
+  subnet_id              = var.public_subnet1_id                  //public subnet                    // git 에 업로드 되기에 보여주면 안됨
+  vpc_security_group_ids = [aws_security_group.bastionhost_sg.id] // bastion host sg
   availability_zone      = "ap-northeast-2a"
   //스토리지 추가
   root_block_device {

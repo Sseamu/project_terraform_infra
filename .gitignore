@@ -30,10 +30,10 @@ crash.log
 
 *.tfvars
 ## ACL certicate
-./alb/variables.tf
+.alb/variables.tf
 ## keypair hide
-./ec2-bastion/variables.tf
-./ec2/variables.tf
+.ec2-bastion/variables.tf
+.ec2/variables.tf
 # Ignore override files as they are usually used to override resources locally and so
 
 # are not checked in

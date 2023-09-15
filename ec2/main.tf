@@ -34,7 +34,7 @@ resource "aws_security_group" "philoberry_sg" {
 resource "aws_instance" "ec2" {
   ami                    = "ami-0f22ac1c12807aefc"               //AMI 선택(아마존리눅스lts -2 )
   instance_type          = var.instance_type                     //인스턴스 유형
-  key_name               = "philoberry-keypair"                  //기존 키 페어 선택
+  key_name               = var.key_pair                          //기존 키 페어 선택
   subnet_id              = var.private_subnet1_id                //서브넷
   vpc_security_group_ids = [aws_security_group.philoberry_sg.id] //기존 보안 그룹 선택
   availability_zone      = "ap-northeast-2a"                     //가용 영역

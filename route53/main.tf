@@ -13,4 +13,14 @@ resource "aws_route53_record" "www" {
 }
 
 
-
+# # Route53 A 레코드 생성
+# resource "aws_route53_record" "A" {
+#   zone_id = aws_route53_zone.philoberry_com.zone_id
+#   name    = var.record_name
+#   type    = "A"
+#   alias {
+#     name                   = var.alb_dns_name
+#     zone_id                = aws_route53_zone.philoberry_com.zone_id
+#     evaluate_target_health = false
+#   }
+# }

@@ -31,7 +31,7 @@ module "ec2" {
   service_type       = var.service_type ## servicetype ?? prod : test
   vpc_id             = module.vpc.vpc_id
   private_subnet1_id = module.vpc.private_subnet1_id
-  instance_type      = "t2.micro"
+  instance_type      = "t3.medium"
   user_data_path     = "./ec2/userdata.sh"
 }
 #Ec2-bastionhost
@@ -71,29 +71,30 @@ module "ec2-bastion" {
 
 
 # ALB
-# module "alb" {
-#   source       = "./alb"
-#   service_type = var.service_type
-#   vpc_id       = module.vpc.vpc_id
-#   subnet_ids   = [module.vpc.public_subnet1_id, module.vpc.public_subnet2_id]
-#   depends_on   = [module.ec2]
-# }
+module "alb" {
+  source       = "./alb"
+  service_type = var.service_type
+  vpc_id       = module.vpc.vpc_id
+  subnet_ids   = [module.vpc.public_subnet1_id, module.vpc.public_subnet2_id]
+  depends_on   = [module.ec2]
+}
 
-#Autoscaling
-# module "asg" {
-#   source ="./autoscaling"
-#   nameprefix = "my-asg-${var.servicetype}"
-#   desried_capacity = 1
-#   max_size = 4
-#   min_size = 1
+# Autoscaling
+module "autoscaling" {
+  source            = "./autoscaling"
+  name_prefix       = "my-philoberry_template-${var.service_type}"
+  desired_capacity  = 1
+  instance_type     = "t3.medium"
+  max_size          = 4
+  min_size          = 1
+  availability_zone = "ap-northeast-2"
+}
 
-# }
 
-
-#route53
-# module "route53" {
-#   source       = "./route53"
-#   domain_name  = "philoberry.com"
-#   record_name  = "www.philoberry.com"
-#   alb_dns_name = module.alb.alb_dns_name
-# }
+# route53
+module "route53" {
+  source       = "./route53"
+  domain_name  = "philoberry.com"
+  record_name  = "www.philoberry.com"
+  alb_dns_name = module.alb.alb_dns_name
+}

@@ -28,8 +28,3 @@ variable "instance_type" {
 variable "user_data_path" {
   type = string
 }
-
-variable "key_pair" {
-  type    = string
-  default = "philoberry-keypair"
-}

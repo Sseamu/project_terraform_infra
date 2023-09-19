@@ -15,7 +15,7 @@ terraform {
 }
 
 
-## AWS 리전(서울)
+## AWS 리전(서울)g
 provider "aws" {
   region = "ap-northeast-2"
 }
@@ -70,14 +70,14 @@ module "ec2-bastion" {
 
 
 
-# ALB
-# module "alb" {
-#   source       = "./alb"
-#   service_type = var.service_type
-#   vpc_id       = module.vpc.vpc_id
-#   subnet_ids   = [module.vpc.public_subnet1_id, module.vpc.public_subnet2_id]
-#   depends_on   = [module.ec2]
-# }
+#ALB
+module "alb" {
+  source       = "./alb"
+  service_type = var.service_type
+  vpc_id       = module.vpc.vpc_id
+  subnet_ids   = [module.vpc.public_subnet1_id, module.vpc.public_subnet2_id]
+  depends_on   = [module.ec2]
+}
 
 #Autoscaling
 # module "asg" {
@@ -91,9 +91,9 @@ module "ec2-bastion" {
 
 
 #route53
-# module "route53" {
-#   source       = "./route53"
-#   domain_name  = "philoberry.com"
-#   record_name  = "www.philoberry.com"
-#   alb_dns_name = module.alb.alb_dns_name
-# }
+module "route53" {
+  source       = "./route53"
+  domain_name  = "philoberry.com"
+  record_name  = "www.philoberry.com"
+  alb_dns_name = module.alb.alb_dns_name
+}

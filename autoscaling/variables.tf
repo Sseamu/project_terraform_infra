@@ -1,11 +1,7 @@
-variable "name_prefix" {
-  description = "Prefix for the names of resources created by this module"
-}
-variable "ami" {
-  type    = string
-  default = "ami-0f22ac1c12807aefc"
-}
 
+variable "name_prefix" {
+  description = "Prefix for asg"
+}
 variable "desired_capacity" {
   type        = number
   description = "asg_capacity"
@@ -27,5 +23,9 @@ variable "instance_type" {
 
 variable "availability_zone" {
   type = string
+}
 
+variable "aws_launch_template_id" {
+  type        = string
+  description = "aws_launch_template _id"
 }

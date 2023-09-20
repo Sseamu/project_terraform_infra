@@ -79,15 +79,28 @@ module "alb" {
   depends_on   = [module.ec2]
 }
 
+#launch Template
+module "launch_template" {
+  source                      = "./launch_template"
+  name_prefix                 = "philoberry-app"
+  ami                         = "" //내가 새로 만들것 기준으로 적용
+  instance_type               = "t3-medium"
+  launch_template_description = "My philoberry launch template"
+  key_name                    = var.key_name
+  security_group_id           = module.ec2.ec2_sg_id
+}
+
+
 # Autoscaling
 module "autoscaling" {
-  source            = "./autoscaling"
-  name_prefix       = "my-philoberry_template-${var.service_type}"
-  desired_capacity  = 1
-  instance_type     = "t3.medium"
-  max_size          = 4
-  min_size          = 1
-  availability_zone = "ap-northeast-2"
+  source                 = "./autoscaling"
+  name_prefix            = "my-philoberry_asg-${var.service_type}"
+  desired_capacity       = 1
+  instance_type          = "t3.medium"
+  max_size               = 4
+  min_size               = 1
+  availability_zone      = "ap-northeast-2"
+  aws_launch_template_id = module.launch_template.philoberry_template
 }
 
 

@@ -29,3 +29,22 @@ variable "aws_launch_template_id" {
   type        = string
   description = "aws_launch_template _id"
 }
+
+variable "service_type" {
+  type = string
+}
+
+variable "vpc_zone_identifier" {
+  description = "(Optional) A list of subnet IDs to launch resources in."
+  type        = list(any)
+}
+variable "target_group_arns" {
+  description = "(Optional) A list of aws_alb_target_group ARNs, for use with Application or Network Load Balancing."
+  type        = list(string)
+  default     = []
+}
+variable "load_balancers" {
+  description = "(Optional) A list of elastic load balancer names to add to the autoscaling group names. Only valid for classic load balancers. For ALBs, use target_group_arns instead."
+  type        = list(string)
+  default     = []
+}

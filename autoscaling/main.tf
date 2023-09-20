@@ -3,7 +3,8 @@ resource "aws_autoscaling_group" "asg" {
   desired_capacity    = var.desired_capacity
   max_size            = var.max_size
   min_size            = var.min_size
-  vpc_zone_identifier = ["ap-northeast-2a", "ap-northeast-2b"]
+  vpc_zone_identifier = var.vpc_zone_identifier
+  target_group_arns   = var.target_group_arns
   health_check_type   = "EC2"
   default_cooldown    = 300
   force_delete        = true

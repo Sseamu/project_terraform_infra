@@ -34,22 +34,22 @@ module "ec2" {
   instance_type      = "t3.medium"
   user_data_path     = "./ec2/userdata.sh"
 }
-#Ec2-bastionhost
-module "ec2-bastion" {
-  source            = "./ec2-bastion"
-  service_type      = var.service_type
-  vpc_id            = module.vpc.vpc_id
-  public_subnet1_id = module.vpc.public_subnet1_id
-  instance_type     = "t2.micro"
-}
+# #Ec2-bastionhost
+# module "ec2-bastion" {
+#   source            = "./ec2-bastion"
+#   service_type      = var.service_type
+#   vpc_id            = module.vpc.vpc_id
+#   public_subnet1_id = module.vpc.public_subnet1_id
+#   instance_type     = "t2.micro"
+# }
 
 # #s3
-# module "s3" {
-#   source       = "./s3"
-#   service_type = var.service_type
-#   vpc_id       = module.vpc.vpc_id
-#   bucket       = "philoberry-s3-${var.service_type}"
-# }
+module "s3" {
+  source       = "./s3"
+  service_type = var.service_type
+  vpc_id       = module.vpc.vpc_id
+  bucket       = "philoberry-s3-${var.service_type}"
+}
 
 
 
@@ -79,19 +79,19 @@ module "alb" {
   depends_on   = [module.ec2]
 }
 
-#launch Template
+# launch Template
 module "launch_template" {
   source                      = "./launch_template"
   name_prefix                 = "philoberry-app"
-  ami                         = "" //내가 새로 만들것 기준으로 적용
-  instance_type               = "t3-medium"
+  ami                         = "ami-0fa26e0963ec0cb84" //내가 새로 만들것 기준으로 적용
+  instance_type               = "t3.medium"
   launch_template_description = "My philoberry launch template"
   key_name                    = var.key_name
   security_group_id           = module.ec2.ec2_sg_id
 }
 
 
-# Autoscaling
+# # Autoscaling
 module "autoscaling" {
   source                 = "./autoscaling"
   name_prefix            = "my-philoberry_asg-${var.service_type}"
@@ -101,13 +101,17 @@ module "autoscaling" {
   min_size               = 1
   availability_zone      = "ap-northeast-2"
   aws_launch_template_id = module.launch_template.philoberry_template
+  vpc_zone_identifier    = [module.vpc.private_subnet1_id, module.vpc.private_subnet2_id]
+  target_group_arns      = [module.alb.target_group_arn]
+  service_type           = var.service_type
+
 }
 
 
-# route53
-module "route53" {
-  source       = "./route53"
-  domain_name  = "philoberry.com"
-  record_name  = "www.philoberry.com"
-  alb_dns_name = module.alb.alb_dns_name
-}
+# # route53
+# module "route53" {
+#   source       = "./route53"
+#   domain_name  = "philoberry.com"
+#   record_name  = "www.philoberry.com"
+#   alb_dns_name = module.alb.alb_dns_name
+# }

@@ -12,6 +12,12 @@ variable "max_size" {
   description = "asg_max_size"
 }
 
+# variable "default_cooldown" {
+#   description = "(Optional, Default: 300) Time (in seconds) after a scaling activity completes before another scaling activity can start."
+#   type        = number
+#   default     = 300
+# }
+
 variable "min_size" {
   type        = number
   description = "asg_min_size"

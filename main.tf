@@ -34,14 +34,14 @@ module "ec2" {
   instance_type      = "t3.medium"
   user_data_path     = "./ec2/userdata.sh"
 }
-# #Ec2-bastionhost
-# module "ec2-bastion" {
-#   source            = "./ec2-bastion"
-#   service_type      = var.service_type
-#   vpc_id            = module.vpc.vpc_id
-#   public_subnet1_id = module.vpc.public_subnet1_id
-#   instance_type     = "t2.micro"
-# }
+#Ec2-bastionhost
+module "ec2-bastion" {
+  source            = "./ec2-bastion"
+  service_type      = var.service_type
+  vpc_id            = module.vpc.vpc_id
+  public_subnet1_id = module.vpc.public_subnet1_id
+  instance_type     = "t2.micro"
+}
 
 # #s3
 module "s3" {
@@ -108,10 +108,10 @@ module "autoscaling" {
 }
 
 
-# # route53
-# module "route53" {
-#   source       = "./route53"
-#   domain_name  = "philoberry.com"
-#   record_name  = "www.philoberry.com"
-#   alb_dns_name = module.alb.alb_dns_name
-# }
+# route53
+module "route53" {
+  source       = "./route53"
+  domain_name  = "philoberry.com"
+  record_name  = "www.philoberry.com"
+  alb_dns_name = module.alb.alb_dns_name
+}
